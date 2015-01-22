@@ -1,7 +1,20 @@
 # PowerShell Convert IIS Logs (W3C)
 Get type safe log entries from an IIS Log file in W3C format
 
+## Install
+```Powershell
+Import-Module "C:\temp\ConvertFromIISLogFile.dll" -Verbose
+```
+Very simple, just import the ddl-file. You should consider to put this cmd in your powershell profil.
+![][Install]
+
+[Install]: http://i.imgur.com/hF5HPC3.png
+
 ## Usage
+```Powershell
+ConvertFrom-IISLogFile C:\temp\u_ex150113.log | Select-Object -First 10 | 
+Format-Table DateTimeLocalTime, ClientIpAddress, HttpStatus, Method, UriStem, ServerSentBytes, ServerReceivedBytes, TimeTaken -AutoSize
+```
 ![][SimpleUsage]
 
 [SimpleUsage]: http://i.imgur.com/tGWDX7P.png 
