@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22512.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadIISLog", "ReadIISLog\ReadIISLog.csproj", "{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadIISLog.Test", "ReadIISLog.Test\ReadIISLog.Test.csproj", "{4572905D-BB2D-4625-A46C-C380B3FE1F21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4572905D-BB2D-4625-A46C-C380B3FE1F21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4572905D-BB2D-4625-A46C-C380B3FE1F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4572905D-BB2D-4625-A46C-C380B3FE1F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4572905D-BB2D-4625-A46C-C380B3FE1F21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,29 @@
+#Software: Microsoft Internet Information Services 8.5
+#Version: 1.0
+#Date: 2015-01-13 00:32:17
+#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+# Bad IP 1
+2015-01-13 00:32:17 100.79.192.81 GET /robots.txt - 80 - 157.55..146 Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm) - 404 0 2 1405 242 283
+# Bad IP 2
+2015-01-13 00:32:17 100.79.81 GET /robots.txt - 80 - 157.55.39.146 Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm) - 404 0 2 1405 242 157
+# Bad Number 1
+2015-01-13 00:32:17 100.79.192.81 GET /robots.txt - 80 - 157.55.39.146 Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm) - 404 0 2 1X405 242 152
+# Bad Number 2
+2015-01-13 00:32:17 100.79.192.81 GET /robots.txt - 80 - 157.55.39.146 Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm) - 404 0 2 1405 24X2 149
+# Bad Number 3
+2015-01-13 00:32:17 100.79.192.81 GET /robots.txt - 80 - 157.55.39.146 Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm) - 404 0 2 1405 242 13X7
+# Bad Number 4
+2015-01-13 00:32:26 100.79.192.81 GET /p/eToken1.png - 80 - 207.46.13.64 Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm) - 404 X 2 1405 245 157
+#Software: Microsoft Internet Information Services 8.5
+
+#Date: 2015-01-13 22:29:42
+#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+
+# Bad Date 1
+2015-01-13 92:29:42 100.79.192.81 GET / - 80 - 183.60.244.30 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_9_4)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/36.0.1985.125+Safari/537.36 - 200 0 0 960 238 807
+# Bad Date 2
+2015-99-13 22:29:42 100.79.192.81 GET /fckeditor/fckconfig.js - 80 - 183.60.244.30 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_9_4)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/36.0.1985.125+Safari/537.36 - 404 0 2 1405 260 376
+# Bad Date 3
+2015-01-13 22:XX:42 100.79.192.81 GET /fckeditor/license.txt - 80 - 183.60.244.30 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_9_4)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/36.0.1985.125+Safari/537.36 - 404 0 2 1405 259 392
+# Bad Date 4
+2015-XX-13 22:29:43 100.79.192.81 GET /fckeditor/editor/js/fckeditorcode_ie.js - 80 - 183.60.244.30 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_9_4)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/36.0.1985.125+Safari/537.36 - 404 0 2 1405 277 399
