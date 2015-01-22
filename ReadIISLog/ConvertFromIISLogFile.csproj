@@ -7,8 +7,8 @@
     <ProjectGuid>{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReadIISLog</RootNamespace>
-    <AssemblyName>ReadIISLog</AssemblyName>
+    <RootNamespace>ConvertFromIISLogFile</RootNamespace>
+    <AssemblyName>ConvertFromIISLogFile</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvertFromIISLog.cs" />
+    <Compile Include="ConvertFromIISLogFile.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 
-namespace ReadIISLog
+namespace ConvertFromIISLogFile
 {
     /// <summary>
     /// W3C Extended Log File Format

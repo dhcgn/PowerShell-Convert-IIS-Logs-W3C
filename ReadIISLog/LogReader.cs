@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace ReadIISLog
+namespace ConvertFromIISLogFile
 {
     public class LogReader
     {
@@ -21,9 +21,11 @@ namespace ReadIISLog
             }
         }
 
-        public static void ProcessLogFile(FileInfo inputFile, Action<LogEntry> callback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
+        public static void ProcessLogFile(FileInfo[] inputFiles, Action<LogEntry> callback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
         {
-            var interpretation = new Dictionary<int, EntryValue>();
+            foreach (var inputFile in inputFiles)
+            {
+                 var interpretation = new Dictionary<int, EntryValue>();
 
             var fullName = inputFile.FullName;
 
@@ -61,6 +63,7 @@ namespace ReadIISLog
             }
 
             progressCallback.Invoke(index, total, fullName);
+            }
         }
 
         private static LogEntry CreateLogEntry(string line, Dictionary<int, EntryValue> interpretation, Action<Exception> errorCallback)

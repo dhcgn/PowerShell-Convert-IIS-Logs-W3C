@@ -55,9 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ReadIISLog\ReadIISLog.csproj">
+    <ProjectReference Include="..\ReadIISLog\ConvertFromIISLogFile.csproj">
       <Project>{77B6BBE0-7251-40B3-8342-75D1EEE7C9FB}</Project>
-      <Name>ReadIISLog</Name>
+      <Name>ConvertFromIISLogFile</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,10 +2,10 @@
 using System.IO;
 using System.Management.Automation;
 
-namespace ReadIISLog
+namespace ConvertFromIISLogFile
 {
-    [Cmdlet(VerbsData.ConvertFrom, "IISLog")]
-    public class ConvertFromIISLog : Cmdlet
+    [Cmdlet(VerbsData.ConvertFrom, "IISLogFile")]
+    public class ConvertFromIISLogFile : Cmdlet
     {
         #region InputFile
 
@@ -17,7 +17,7 @@ namespace ReadIISLog
             HelpMessage = "IIS LogFile"
             )]
         [ValidateNotNullOrEmpty]
-        public FileInfo InputFile { get; set; }
+        public FileInfo[] InputFile { get; set; }
 
         #endregion
 
