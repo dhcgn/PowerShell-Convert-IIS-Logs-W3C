@@ -39,7 +39,7 @@ Username            Property   string Username {get;set;}
 ```
 
 ### Return Type Explanation
-```
+```C#
 using System;
 using System.Net;
 
