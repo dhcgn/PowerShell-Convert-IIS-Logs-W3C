@@ -10,14 +10,17 @@ namespace ConvertFromIISLogFile
     {
         private static int CountLinesInFile(string filePath)
         {
-            using (var r = new StreamReader(filePath))
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                var i = 0;
+                using (var r = new StreamReader(fileStream))
+                {
+                    var i = 0;
 
-                while (r.ReadLine() != null)
-                    i++;
+                    while (r.ReadLine() != null)
+                        i++;
 
-                return i;
+                    return i;
+                }
             }
         }
 
@@ -34,33 +37,36 @@ namespace ConvertFromIISLogFile
 
             progressCallback.Invoke(index, total, fullName);
 
-            using (var file = new StreamReader(fullName))
-            {
-                string line;
-                while ((line = file.ReadLine()) != null)
+                using (FileStream fileStream = new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    index++;
-                    if (line.StartsWith("#Fields:"))
+                    using (var file = new StreamReader(fileStream))
                     {
-                        interpretation = GetInterpretation(line);
-                        continue;
-                    }
-                    if (line.StartsWith("#"))
-                    {
-                        continue;
-                    }
+                        string line;
+                        while ((line = file.ReadLine()) != null)
+                        {
+                            index++;
+                            if (line.StartsWith("#Fields:"))
+                            {
+                                interpretation = GetInterpretation(line);
+                                continue;
+                            }
+                            if (line.StartsWith("#"))
+                            {
+                                continue;
+                            }
 
-                    var logEntry = CreateLogEntry(line, interpretation, errorCallback);
-                    if(logEntry!=null)
-                        callback.Invoke(logEntry);
+                            var logEntry = CreateLogEntry(line, interpretation, errorCallback);
+                            if (logEntry != null)
+                                callback.Invoke(logEntry);
 
-                    if (index%1000 == 0)
-                    {
-                        progressCallback.Invoke(index, total, fullName);
+                            if (index % 1000 == 0)
+                            {
+                                progressCallback.Invoke(index, total, fullName);
+                            }
+                        }
+                        file.Close();
                     }
                 }
-                file.Close();
-            }
 
             progressCallback.Invoke(index, total, fullName);
             }
