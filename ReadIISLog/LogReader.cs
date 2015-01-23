@@ -24,11 +24,24 @@ namespace ConvertFromIISLogFile
             }
         }
 
-        public static void ProcessLogFile(FileInfo[] inputFiles, Action<LogEntry> callback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
+        public static void ProcessLogFiles(FileInfo[] inputFiles, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
         {
             foreach (var inputFile in inputFiles)
             {
-                 var interpretation = new Dictionary<int, EntryValue>();
+                try
+                {
+                    ProcessLogFile(inputFile, outputCallback, progressCallback, errorCallback);
+                }
+                catch (Exception e)
+                {
+                    errorCallback(e);
+                }
+            }
+        }
+
+        private static void ProcessLogFile(FileInfo inputFile, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
+        {
+            var interpretation = new Dictionary<int, EntryValue>();
 
             var fullName = inputFile.FullName;
 
@@ -37,39 +50,38 @@ namespace ConvertFromIISLogFile
 
             progressCallback.Invoke(index, total, fullName);
 
-                using (FileStream fileStream = new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fileStream = new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (var file = new StreamReader(fileStream))
                 {
-                    using (var file = new StreamReader(fileStream))
+                    string line;
+                    while ((line = file.ReadLine()) != null)
                     {
-                        string line;
-                        while ((line = file.ReadLine()) != null)
+                        index++;
+                        if (line.StartsWith("#Fields:"))
                         {
-                            index++;
-                            if (line.StartsWith("#Fields:"))
-                            {
-                                interpretation = GetInterpretation(line);
-                                continue;
-                            }
-                            if (line.StartsWith("#"))
-                            {
-                                continue;
-                            }
-
-                            var logEntry = CreateLogEntry(line, interpretation, errorCallback);
-                            if (logEntry != null)
-                                callback.Invoke(logEntry);
-
-                            if (index % 1000 == 0)
-                            {
-                                progressCallback.Invoke(index, total, fullName);
-                            }
+                            interpretation = GetInterpretation(line);
+                            continue;
                         }
-                        file.Close();
+                        if (line.StartsWith("#"))
+                        {
+                            continue;
+                        }
+
+                        var logEntry = CreateLogEntry(line, interpretation, errorCallback);
+                        if (logEntry != null)
+                            outputCallback.Invoke(logEntry);
+
+                        if (index%1000 == 0)
+                        {
+                            progressCallback.Invoke(index, total, fullName);
+                        }
                     }
+                    file.Close();
                 }
+            }
 
             progressCallback.Invoke(index, total, fullName);
-            }
         }
 
         private static LogEntry CreateLogEntry(string line, Dictionary<int, EntryValue> interpretation, Action<Exception> errorCallback)
@@ -78,9 +90,9 @@ namespace ConvertFromIISLogFile
 
             var values = line.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-            if(values.Count()!=interpretation.Count)
+            if (values.Count() != interpretation.Count)
                 return null;
-            
+
 
             for (var i = 0; i < values.Length; i++)
             {

@@ -25,7 +25,7 @@ namespace ConvertFromIISLogFile
         {
             base.ProcessRecord();
 
-            LogReader.ProcessLogFile(this.InputFile, this.WriteOutput, this.WriteProgress, this.ErrorHandling);
+            LogReader.ProcessLogFiles(this.InputFile, this.WriteOutput, this.WriteProgress, this.ErrorHandling);
         }
 
         private void ErrorHandling(Exception obj)
