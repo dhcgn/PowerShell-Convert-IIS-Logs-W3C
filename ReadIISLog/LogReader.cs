@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 
 namespace ConvertFromIISLogFile
 {
@@ -24,13 +25,13 @@ namespace ConvertFromIISLogFile
             }
         }
 
-        public static void ProcessLogFiles(FileInfo[] inputFiles, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
+        public static void ProcessLogFiles(FileInfo[] inputFiles, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress)
         {
             foreach (var inputFile in inputFiles)
             {
                 try
                 {
-                    ProcessLogFile(inputFile, outputCallback, progressCallback, errorCallback);
+                    ProcessLogFile(inputFile, outputCallback, progressCallback, errorCallback, noLineByLineProgress);
                 }
                 catch (Exception e)
                 {
@@ -39,13 +40,16 @@ namespace ConvertFromIISLogFile
             }
         }
 
-        private static void ProcessLogFile(FileInfo inputFile, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback)
+        private static void ProcessLogFile(FileInfo inputFile, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress)
         {
             var interpretation = new Dictionary<int, EntryValue>();
 
             var fullName = inputFile.FullName;
 
-            var total = CountLinesInFile(fullName);
+            int total = 0;
+            if (!noLineByLineProgress)
+                total = CountLinesInFile(fullName);
+
             var index = 0;
 
             progressCallback.Invoke(index, total, fullName);
@@ -72,9 +76,12 @@ namespace ConvertFromIISLogFile
                         if (logEntry != null)
                             outputCallback.Invoke(logEntry);
 
-                        if (index%1000 == 0)
+                        if (!noLineByLineProgress)
                         {
-                            progressCallback.Invoke(index, total, fullName);
+                            if (index%1000 == 0)
+                            {
+                                progressCallback.Invoke(index, total, fullName);
+                            }
                         }
                     }
                     file.Close();
@@ -133,6 +140,10 @@ namespace ConvertFromIISLogFile
                             result.ClientIpAddress = IPAddress.Parse(value);
                             break;
                         case EntryValue.csUser_Agent:
+                            // todo get the encoding shit working
+                            //byte[] bytes = Encoding.Unicode.GetBytes(value.Replace("+", " "));
+                            //var newBytes = Encoding.Convert(Encoding.Unicode, Encoding.UTF8, bytes);
+                            //var userAgent =  Encoding.UTF8.GetString(newBytes);
                             result.UserAgent = value.Replace("+", " ");
                             break;
                         case EntryValue.csReferer:
