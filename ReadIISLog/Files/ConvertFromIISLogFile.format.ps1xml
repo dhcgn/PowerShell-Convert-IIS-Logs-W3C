@@ -43,7 +43,7 @@
           <TableColumnHeader>
             <Width>7</Width>
           </TableColumnHeader>
-          <!-- Receive -->
+          <!-- Received -->
           <TableColumnHeader>
             <Width>7</Width>
           </TableColumnHeader>
@@ -86,7 +86,7 @@
                 <PropertyName>Sent</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Receive</PropertyName>
+                <PropertyName>Received</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>TimeTaken</PropertyName>

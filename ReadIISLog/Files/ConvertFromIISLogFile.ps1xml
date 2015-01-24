@@ -20,7 +20,7 @@
               <Name>Query</Name>
               <Name>UserAgent</Name>
               <Name>Sent</Name>
-              <Name>Receive</Name>
+              <Name>Received</Name>
               <Name>TimeTaken</Name>
             </ReferencedProperties>
           </PropertySet>
@@ -43,7 +43,7 @@
         <ReferencedMemberName>ServerSentBytes</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
-        <Name>Receive</Name>
+        <Name>Received</Name>
         <ReferencedMemberName>ServerReceivedBytes</ReferencedMemberName>
       </AliasProperty>
       <AliasProperty>
