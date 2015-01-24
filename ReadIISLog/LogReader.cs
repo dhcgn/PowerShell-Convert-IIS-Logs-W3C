@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -25,13 +26,15 @@ namespace ConvertFromIISLogFile
             }
         }
 
-        public static void ProcessLogFiles(FileInfo[] inputFiles, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress)
+        public static void ProcessLogFiles(FileInfo[] inputFiles, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress, Func<bool> isCanceld)
         {
             foreach (var inputFile in inputFiles)
             {
                 try
                 {
-                    ProcessLogFile(inputFile, outputCallback, progressCallback, errorCallback, noLineByLineProgress);
+                    if(isCanceld.Invoke())return;
+
+                    ProcessLogFile(inputFile, outputCallback, progressCallback, errorCallback, noLineByLineProgress, isCanceld);
                 }
                 catch (Exception e)
                 {
@@ -40,7 +43,7 @@ namespace ConvertFromIISLogFile
             }
         }
 
-        private static void ProcessLogFile(FileInfo inputFile, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress)
+        private static void ProcessLogFile(FileInfo inputFile, Action<LogEntry> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress, Func<bool> isCanceld)
         {
             var interpretation = new Dictionary<int, EntryValue>();
 
@@ -61,7 +64,10 @@ namespace ConvertFromIISLogFile
                     string line;
                     while ((line = file.ReadLine()) != null)
                     {
+                        if (isCanceld.Invoke()) return;
+
                         index++;
+                        
                         if (line.StartsWith("#Fields:"))
                         {
                             interpretation = GetInterpretation(line);
@@ -111,11 +117,13 @@ namespace ConvertFromIISLogFile
                     switch (valueInterpretation)
                     {
                         case EntryValue.date:
-                            result.Date = value == "-" ? DateTime.MinValue : DateTime.Parse(value);
+                            // 2015-01-13
+                            result.Date = value == "-" ? DateTime.MinValue : DateTime.ParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                             result.Date = result.Date.Date;
                             break;
                         case EntryValue.time:
-                            result.Time = value == "-" ? DateTime.MinValue : DateTime.Parse(value);
+                            // 00:32:17
+                            result.Time = value == "-" ? DateTime.MinValue : DateTime.ParseExact(value, "HH:mm:ss", CultureInfo.InvariantCulture);
                             result.Time = new DateTime(1, 1, 1, result.Time.Hour, result.Time.Minute, result.Time.Second);
                             break;
                         case EntryValue.s_ip:

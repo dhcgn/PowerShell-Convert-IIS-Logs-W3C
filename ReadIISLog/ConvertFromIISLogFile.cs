@@ -9,6 +9,8 @@ namespace ConvertFromIISLogFile
     [Cmdlet(VerbsData.ConvertFrom, "IISLogFile")]
     public class ConvertFromIISLogFile : Cmdlet
     {
+        private bool stopRequest = false;
+
         #region InputFiles
 
         [Parameter(
@@ -56,7 +58,7 @@ namespace ConvertFromIISLogFile
         {
             base.ProcessRecord();
 
-            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent);
+            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, ()=> this.stopRequest);
         }
 
         private void ErrorHandling(Exception obj)
@@ -86,7 +88,17 @@ namespace ConvertFromIISLogFile
 
         private void WriteOutput(LogEntry logEntry)
         {
-            this.WriteObject(logEntry);
+            if(this.stopRequest)return;
+
+            try
+            {
+                this.WriteObject(logEntry);
+            }
+            catch (PipelineStoppedException pipelineStoppedException) if (pipelineStoppedException.Message == "The pipeline has been stopped.")
+            {
+                this.stopRequest = true;
+                this.EndProcessing();
+            }
         }
     }
 }
