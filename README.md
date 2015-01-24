@@ -12,12 +12,11 @@ Very simple, just import the ddl-file. You should consider to put this cmd in yo
 
 ## Usage
 ```Powershell
-ConvertFrom-IISLogFile C:\temp\u_ex150113.log | Select-Object -First 10 | 
-Format-Table DateTimeLocalTime, ClientIpAddress, HttpStatus, Method, UriStem, ServerSentBytes, ServerReceivedBytes, TimeTaken -AutoSize
+ConvertFrom-IISLogFile C:\temp\u_ex150113.log | Select-Object -First 10
 ```
 ![][SimpleUsage]
 
-[SimpleUsage]: http://i.imgur.com/tGWDX7P.png 
+[SimpleUsage]: http://i.imgur.com/otiONvb.png 
 
 ## Return Type
 
