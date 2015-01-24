@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+	<ViewDefinitions>
+		<View>
+			<Name>ConvertFromIISLogFile.LogEntry</Name>
+			<ViewSelectedBy>
+				<TypeName>ConvertFromIISLogFile.LogEntry</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<!-- Timestamp -->
+					<TableColumnHeader>
+						<Width>19</Width>
+					</TableColumnHeader>
+					<!-- IP -->
+					<TableColumnHeader>
+						<Width>15</Width>
+					</TableColumnHeader>
+					<!-- Port -->
+					<TableColumnHeader>
+						<Width>4</Width>
+					</TableColumnHeader>
+					<!-- Status -->
+					<TableColumnHeader>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<!-- Method -->
+					<TableColumnHeader>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<!-- Target -->
+					<TableColumnHeader/>
+					<!-- Query -->
+					<TableColumnHeader/>
+					<!-- UserAgent -->
+					<TableColumnHeader/>
+					<!-- Sent -->
+					<TableColumnHeader>
+						<Width>7</Width>
+					</TableColumnHeader>
+					<!-- Receive -->
+					<TableColumnHeader>
+						<Width>7</Width>
+					</TableColumnHeader>
+					<!-- TimeTaken -->
+					<TableColumnHeader>
+						<Width>9</Width>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>Timestamp</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>IP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Status</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Method</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Target</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Query</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>UserAgent</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Sent</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Receive</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>TimeTaken</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+	</ViewDefinitions>
+</Configuration>
