@@ -23,31 +23,38 @@ ConvertFrom-IISLogFile C:\temp\u_ex150113.log | Select-Object -First 10
 ```
    TypeName: ConvertFromIISLogFile.LogEntry
 
-Name                MemberType Definition
-----                ---------- ----------
-Equals              Method     bool Equals(System.Object obj)
-GetHashCode         Method     int GetHashCode()
-GetType             Method     type GetType()
-ToString            Method     string ToString()
-ClientIpAddress     Property   ipaddress ClientIpAddress {get;set;}
-Date                Property   datetime Date {get;set;}
-DateTime            Property   datetime DateTime {get;}
-DateTimeLocalTime   Property   datetime DateTimeLocalTime {get;}
-HttpStatus          Property   string HttpStatus {get;set;}
-Method              Property   string Method {get;set;}
-Port                Property   int Port {get;set;}
-ProtocolSubstatus   Property   string ProtocolSubstatus {get;set;}
-Referrer            Property   string Referrer {get;set;}
-ServerReceivedBytes Property   int ServerReceivedBytes {get;set;}
-ServerSentBytes     Property   int ServerSentBytes {get;set;}
-SourceIpAddress     Property   ipaddress SourceIpAddress {get;set;}
-SystemErrorCodes    Property   string SystemErrorCodes {get;set;}
-Time                Property   datetime Time {get;set;}
-TimeTaken           Property   int TimeTaken {get;set;}
-UriQuery            Property   string UriQuery {get;set;}
-UriStem             Property   string UriStem {get;set;}
-UserAgent           Property   string UserAgent {get;set;}
-Username            Property   string Username {get;set;}
+Name                MemberType    Definition
+----                ----------    ----------
+IP                  AliasProperty IP = ClientIpAddress
+Query               AliasProperty Query = UriQuery
+Receive             AliasProperty Receive = ServerReceivedBytes
+Sent                AliasProperty Sent = ServerSentBytes
+Status              AliasProperty Status = HttpStatus
+Target              AliasProperty Target = UriStem
+Timestamp           AliasProperty Timestamp = DateTimeLocalTime
+Equals              Method        bool Equals(System.Object obj)
+GetHashCode         Method        int GetHashCode()
+GetType             Method        type GetType()
+ToString            Method        string ToString()
+ClientIpAddress     Property      ipaddress ClientIpAddress {get;set;}
+Date                Property      datetime Date {get;set;}
+DateTime            Property      datetime DateTime {get;}
+DateTimeLocalTime   Property      datetime DateTimeLocalTime {get;}
+HttpStatus          Property      string HttpStatus {get;set;}
+Method              Property      string Method {get;set;}
+Port                Property      int Port {get;set;}
+ProtocolSubstatus   Property      string ProtocolSubstatus {get;set;}
+Referrer            Property      string Referrer {get;set;}
+ServerReceivedBytes Property      int ServerReceivedBytes {get;set;}
+ServerSentBytes     Property      int ServerSentBytes {get;set;}
+SourceIpAddress     Property      ipaddress SourceIpAddress {get;set;}
+SystemErrorCodes    Property      string SystemErrorCodes {get;set;}
+Time                Property      datetime Time {get;set;}
+TimeTaken           Property      int TimeTaken {get;set;}
+UriQuery            Property      string UriQuery {get;set;}
+UriStem             Property      string UriStem {get;set;}
+UserAgent           Property      string UserAgent {get;set;}
+Username            Property      string Username {get;set;}
 ```
 
 ### Return Type Explanation
