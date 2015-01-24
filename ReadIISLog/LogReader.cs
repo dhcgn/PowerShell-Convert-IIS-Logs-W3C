@@ -175,6 +175,12 @@ namespace ConvertFromIISLogFile
                         case EntryValue.TimeTaken:
                             result.TimeTaken = Int32.Parse(value);
                             break;
+                        case EntryValue.ComputerName:
+                            result.ComputerName = value;
+                            break;
+                        case EntryValue.SiteName:
+                            result.SiteName = value;
+                            break;
                     }
                 }
                 catch (Exception e)
@@ -241,6 +247,10 @@ namespace ConvertFromIISLogFile
                     return EntryValue.cs_bytes;
                 case "time-taken":
                     return EntryValue.TimeTaken;
+                case "s-computername":
+                    return EntryValue.ComputerName;
+                case "s-sitename":
+                    return EntryValue.SiteName;
 
                 default:
                     return EntryValue.Unkown;
@@ -266,7 +276,9 @@ namespace ConvertFromIISLogFile
             sc_bytes,
             cs_bytes,
             TimeTaken,
-            Unkown
+            Unkown,
+            ComputerName,
+            SiteName
         }
     }
 }

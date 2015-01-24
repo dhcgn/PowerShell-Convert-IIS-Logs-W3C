@@ -139,5 +139,21 @@ namespace ConvertFromIISLogFile
         ///     Field: time-taken
         /// </summary>
         public int TimeTaken { get; set; }
+
+
+        /// <summary>
+        /// The Internet service name and instance number that was running on the client.
+        /// 
+        ///     Field: s-sitename
+        /// </summary>
+        public string SiteName { get; set; }
+
+
+        /// <summary>
+        /// The name of the server on which the log file entry was generated.
+        /// 
+        ///     Field: s-computername
+        /// </summary>
+        public string ComputerName { get; set; }
     }
 }

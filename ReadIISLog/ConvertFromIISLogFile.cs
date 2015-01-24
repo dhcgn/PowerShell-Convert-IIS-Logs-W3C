@@ -58,11 +58,12 @@ namespace ConvertFromIISLogFile
         {
             base.ProcessRecord();
 
-            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, ()=> this.stopRequest);
+            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, ()=> { return this.stopRequest; });
         }
 
         private void ErrorHandling(Exception obj)
         {
+            if (this.stopRequest) return;
             this.WriteError(new ErrorRecord(obj, "0001", ErrorCategory.InvalidData, this));
         }
 
@@ -94,10 +95,9 @@ namespace ConvertFromIISLogFile
             {
                 this.WriteObject(logEntry);
             }
-            catch (PipelineStoppedException pipelineStoppedException) if (pipelineStoppedException.Message == "The pipeline has been stopped.")
+            catch (PipelineStoppedException)
             {
                 this.stopRequest = true;
-                this.EndProcessing();
             }
         }
     }
