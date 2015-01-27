@@ -4,13 +4,14 @@ using System.Linq;
 
 namespace ConvertFromIISLogFile
 {
-    public class Statistik
+    public class StatsGenerator
     {
         private const string Header = "DateTime;Method;Requests;NOKRequests;ServerReceivedBytes;ServerSentBytes;AverageTimeTaken;";
 
-        public static void CreateStatistik(List<LogEntry> logEntries, string resolution, Action<string> writeOutputCallback, Action<string> writeVerboseCallback, Func<bool> isStopRequested)
+        public static void Create(List<LogEntry> logEntries, string resolution, Action<string> writeOutputCallback, Action<string> writeVerboseCallback, Func<bool> isStopRequested)
         {
             writeVerboseCallback.Invoke("Log entries count: " + logEntries.Count);
+
             writeVerboseCallback.Invoke("Sorting log entries ...");
             logEntries = logEntries.OrderBy(x => x.DateTime).ToList();
 

@@ -49,7 +49,7 @@
     <Compile Include="Internals\LogEntry.cs" />
     <Compile Include="Internals\LogReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Internals\Statistik.cs" />
+    <Compile Include="Internals\StatsGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Files\ConvertFromIISLogFile.ps1xml">

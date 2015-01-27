@@ -76,7 +76,7 @@ namespace ConvertFromIISLogFile
             List<LogEntry> logEntries = new List<LogEntry>();
             if (this.InputFiles != null)
             {
-                WriteVerbose("Reading log files ...");
+                this.WriteVerbose("Reading log files ...");
                 LogReader.ProcessLogFiles(this.InputFiles, entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
             }
             else
@@ -84,7 +84,7 @@ namespace ConvertFromIISLogFile
                 logEntries = this.LogEntries.ToList();
             }
             
-            Statistik.CreateStatistik(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
+            StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
         }
 
 
