@@ -23,7 +23,7 @@ namespace ConvertFromIISLogFile
             writeVerboseCallback.Invoke(String.Format("Creating a csv from {0} to last {1} over {2} entries", first.DateTimeLocalTime, last.DateTimeLocalTime, logEntries.Count));
             writeOutputCallback.Invoke(Header);
 
-            foreach (var groupByTime in logEntries.GroupBy(x => (int) (x.DateTimeLocalTime.Ticks/resolutionTimeSpan.Ticks)*resolutionTimeSpan.Ticks))
+            foreach (var groupByTime in logEntries.GroupBy(x => (int)(x.DateTimeLocalTime.Ticks / resolutionTimeSpan.Ticks) * resolutionTimeSpan.Ticks))
             {
                 if (isStopRequested.Invoke()) return;
 
