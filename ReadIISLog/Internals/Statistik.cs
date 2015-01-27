@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConvertFromIISLogFile
 {
     public class Statistik
     {
-        private const string Header = "DateTime;Method;Requests;SumServerReceivedBytes;SumServerSentBytes;AverageTimeTaken;";
+        private const string Header = "DateTime;Method;Requests;NOKRequests;ServerReceivedBytes;ServerSentBytes;AverageTimeTaken;";
 
         public static void CreateStatistik(List<LogEntry> logEntries, string resolution, Action<string> writeOutputCallback, Action<string> writeVerboseCallback, Func<bool> isStopRequested)
         {
@@ -25,47 +22,33 @@ namespace ConvertFromIISLogFile
             writeVerboseCallback.Invoke(String.Format("Creating a csv from {0} to last {1} over {2} entries", first.DateTimeLocalTime, last.DateTimeLocalTime, logEntries.Count));
             writeOutputCallback.Invoke(Header);
 
-            foreach (var groupByTime in logEntries.GroupBy(x=>(int)(x.DateTimeLocalTime.Ticks / resolutionTimeSpan.Ticks)* resolutionTimeSpan.Ticks))
+            foreach (var groupByTime in logEntries.GroupBy(x => (int) (x.DateTimeLocalTime.Ticks/resolutionTimeSpan.Ticks)*resolutionTimeSpan.Ticks))
             {
                 if (isStopRequested.Invoke()) return;
 
                 var dateTime = new DateTime(groupByTime.Key);
-                writeOutputCallback.Invoke(string.Format("{0};{1};{2};{3};{4};{5};",
-                      dateTime,
-                      "All",
-                      groupByTime.Count(),
-                      groupByTime.Sum(x => x.ServerReceivedBytes),
-                      groupByTime.Sum(x => x.ServerSentBytes),
-                      groupByTime.Average(x => x.TimeTaken)
-                      ));
+                writeOutputCallback.Invoke(CreateCsvEntry(dateTime, "All", groupByTime.ToList()));
 
-
-                foreach (var groupByMethod in groupByTime.GroupBy(x=>x.UriStem))
+                foreach (var groupByMethod in groupByTime.GroupBy(x => x.UriStem))
                 {
                     if (isStopRequested.Invoke()) return;
 
-                    writeOutputCallback.Invoke(string.Format("{0};{1};{2};{3};{4};{5};", 
-                        dateTime, 
-                        groupByMethod.Key, 
-                        groupByMethod.Count(),
-                        groupByMethod.Sum(x=>x.ServerReceivedBytes),
-                        groupByMethod.Sum(x=>x.ServerSentBytes),
-                        groupByMethod.Average(x=>x.TimeTaken)
-                        ));
+                    writeOutputCallback.Invoke(CreateCsvEntry(dateTime, groupByMethod.Key, groupByMethod.ToList()));
                 }
             }
         }
 
-        private void Temp(Action<string> writeOutputCallback, DateTime timestamp, string name, IList<LogEntry> groupByMethod)
+        private static string CreateCsvEntry(DateTime timestamp, string name, List<LogEntry> groupByMethod)
         {
-            writeOutputCallback.Invoke(string.Format("{0};{1};{2};{3};{4};{5};",
-                       timestamp,
-                       name,
-                       groupByMethod.Count(),
-                       groupByMethod.Sum(x => x.ServerReceivedBytes),
-                       groupByMethod.Sum(x => x.ServerSentBytes),
-                       groupByMethod.Average(x => x.TimeTaken)
-                       ));
+            return string.Format("{0};{1};{2};{3};{4};{5};{6}",
+                timestamp,
+                name,
+                groupByMethod.Count(),
+                groupByMethod.Count(x => x.HttpStatus.StartsWith("4") || x.HttpStatus.StartsWith("5")),
+                groupByMethod.Sum(x => x.ServerReceivedBytes),
+                groupByMethod.Sum(x => x.ServerSentBytes),
+                groupByMethod.Average(x => x.TimeTaken)
+                );
         }
 
         private static TimeSpan GetTimeSpanResolution(string resolution)
