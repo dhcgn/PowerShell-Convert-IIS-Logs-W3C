@@ -106,7 +106,6 @@ namespace ConvertFromIISLogFile
             if (values.Count() != interpretation.Count)
                 return null;
 
-
             for (var i = 0; i < values.Length; i++)
             {
                 try

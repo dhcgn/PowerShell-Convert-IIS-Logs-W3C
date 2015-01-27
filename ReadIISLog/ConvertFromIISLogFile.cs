@@ -39,8 +39,6 @@ namespace ConvertFromIISLogFile
 
         protected override void BeginProcessing()
         {
-            base.BeginProcessing();
-
             // todo get the encoding shit working
             //GetEncoding.CPINFOEX info;
             //if (GetEncoding.GetCPInfoEx(65001, 0, out info) != 0)
@@ -56,9 +54,7 @@ namespace ConvertFromIISLogFile
 
         protected override void ProcessRecord()
         {
-            base.ProcessRecord();
-
-            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, ()=> { return this.stopRequest; });
+            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
         }
 
         private void ErrorHandling(Exception obj)
@@ -89,7 +85,7 @@ namespace ConvertFromIISLogFile
 
         private void WriteOutput(LogEntry logEntry)
         {
-            if(this.stopRequest)return;
+            if (this.stopRequest) return;
 
             try
             {

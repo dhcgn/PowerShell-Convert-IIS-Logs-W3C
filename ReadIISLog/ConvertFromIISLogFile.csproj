@@ -44,10 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConvertFromIISLogFile.cs" />
-    <Compile Include="GetEncoding.cs" />
-    <Compile Include="LogEntry.cs" />
-    <Compile Include="LogReader.cs" />
+    <Compile Include="EportIISLogStats.cs" />
+    <Compile Include="Internals\GetEncoding.cs" />
+    <Compile Include="Internals\LogEntry.cs" />
+    <Compile Include="Internals\LogReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Internals\Statistik.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Files\ConvertFromIISLogFile.ps1xml">
