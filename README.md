@@ -203,3 +203,12 @@ namespace ConvertFromIISLogFile
     }
 }
 ```
+### Debugging
+
+Start external program: ```C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe```
+
+Command line arguments: ```-noexit -noprofile -command "&{ import-module "PathToDLL\ConvertFromIISLogFile.dll" -verbose;}"```
+
+or
+
+Command line arguments: ```-noexit -noprofile -command "&{ import-module "PathToDLL\ConvertFromIISLogFile.dll" -verbose; New-Variable -Value (Export-IISLogStats -InputFiles (gci PathToLogFiles) -Resolution Hour -Verbose) -Name log -Visibility Public -Scope Global }"```
