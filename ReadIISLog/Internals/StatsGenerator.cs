@@ -44,10 +44,10 @@ namespace ConvertFromIISLogFile
             return string.Format("{0};{1};{2};{3};{4};{5};{6}",
                 timestamp,
                 name,
-                groupByMethod.Count(),
-                groupByMethod.Count(x => x.HttpStatus.StartsWith("4") || x.HttpStatus.StartsWith("5")),
-                groupByMethod.Sum(x => x.ServerReceivedBytes),
-                groupByMethod.Sum(x => x.ServerSentBytes),
+                groupByMethod.LongCount(),
+                groupByMethod.Where(x => x.HttpStatus.StartsWith("4") || x.HttpStatus.StartsWith("5")).LongCount(),
+                groupByMethod.Select(x=>(long)x.ServerReceivedBytes).Sum(),
+                groupByMethod.Select(x => (long)x.ServerSentBytes).Sum(),
                 groupByMethod.Average(x => x.TimeTaken)
                 );
         }
