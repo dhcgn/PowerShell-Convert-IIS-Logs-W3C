@@ -47,6 +47,7 @@ namespace ConvertFromIISLogFile
 
         #endregion
 
+        public const string ResolutionSecond = "Second";
         public const string ResolutionMinute = "Minute";
         public const string ResolutionHour = "Hour";
         public const string ResolutionDay = "Day";
@@ -60,7 +61,7 @@ namespace ConvertFromIISLogFile
             HelpMessage = "IIS Log"
             )]
         [ValidateNotNull]
-        [ValidateSet(ResolutionMinute, ResolutionHour, ResolutionDay, ResolutionWeek)]
+        [ValidateSet(ResolutionSecond, ResolutionMinute, ResolutionHour, ResolutionDay, ResolutionWeek)]
         public string Resolution { get; set; }
 
         #endregion
@@ -73,18 +74,24 @@ namespace ConvertFromIISLogFile
                 return;
             }
 
-            List<LogEntry> logEntries = new List<LogEntry>();
-            if (this.InputFiles != null)
+            if (this.InputFiles == null && this.LogEntries !=null)
             {
-                this.WriteVerbose("Reading log files ...");
-                LogReader.ProcessLogFiles(this.InputFiles, entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
+                StatsGenerator.Create(this.LogEntries.ToList(), this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
             }
-            else
+
+            if (this.InputFiles != null && this.LogEntries == null)
             {
-                logEntries = this.LogEntries.ToList();
+                foreach (var fileInfoGroup in this.InputFiles.GroupBy(x=>x.Name))
+                {
+                    List<LogEntry> logEntries = new List<LogEntry>();
+
+                    this.WriteVerbose(String.Format("Reading {0} log files with name {1}.", fileInfoGroup.Count(), fileInfoGroup.Key));
+                    LogReader.ProcessLogFiles(this.InputFiles, entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
+
+                    this.WriteVerbose(String.Format("Erstelle die Statistik aus {0} Einträgen.", fileInfoGroup.Count()));
+                    StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
+                }
             }
-            
-            StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
         }
 
 

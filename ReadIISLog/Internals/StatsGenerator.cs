@@ -23,7 +23,7 @@ namespace ConvertFromIISLogFile
             writeVerboseCallback.Invoke(String.Format("Creating a csv from {0} to last {1} over {2} entries", first.DateTimeLocalTime, last.DateTimeLocalTime, logEntries.Count));
             writeOutputCallback.Invoke(Header);
 
-            foreach (var groupByTime in logEntries.GroupBy(x => (int)(x.DateTimeLocalTime.Ticks / resolutionTimeSpan.Ticks) * resolutionTimeSpan.Ticks))
+            foreach (var groupByTime in logEntries.GroupBy(x => (long)(x.DateTimeLocalTime.Ticks / resolutionTimeSpan.Ticks) * resolutionTimeSpan.Ticks))
             {
                 if (isStopRequested.Invoke()) return;
 
@@ -64,6 +64,8 @@ namespace ConvertFromIISLogFile
                     return new TimeSpan(1, 0, 0);
                 case EportIISLogStats.ResolutionMinute:
                     return new TimeSpan(0, 1, 0);
+                case EportIISLogStats.ResolutionSecond:
+                    return new TimeSpan(0, 0, 1);
                 default:
                     throw new Exception();
             }
