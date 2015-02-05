@@ -65,6 +65,7 @@ namespace ConvertFromIISLogFile
         public string Resolution { get; set; }
 
         public const string GroupByMethod = "Method";
+        public const string GroupByNone = "None";
 
         [Parameter(
             Mandatory = false,
@@ -73,7 +74,7 @@ namespace ConvertFromIISLogFile
             Position = 2,
             HelpMessage = "GroupBy"
             )]
-        [ValidateSet(GroupByMethod)]
+        [ValidateSet(GroupByNone, GroupByMethod)]
         public string GroupBy { get; set; }
 
         #endregion
@@ -106,7 +107,7 @@ namespace ConvertFromIISLogFile
                     List<LogEntry> logEntries = new List<LogEntry>();
 
                     this.WriteVerbose(string.Format("Reading {0} files with filename {1}", fileInfoGroup.Count(), fileInfoGroup.Key));
-                    LogReader.ProcessLogFiles(this.InputFiles, entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
+                    LogReader.ProcessLogFiles(fileInfoGroup.ToArray(), entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
 
                     this.WriteVerbose(String.Format("Create stats."));
                     StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings, supressCsvHeader);
