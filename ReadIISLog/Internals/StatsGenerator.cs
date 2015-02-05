@@ -68,6 +68,8 @@ namespace ConvertFromIISLogFile
                     return new TimeSpan(1, 0, 0, 0);
                 case EportIISLogStats.ResolutionHour:
                     return new TimeSpan(1, 0, 0);
+                case EportIISLogStats.ResolutionQuarterHour:
+                    return new TimeSpan(0, 15, 0);
                 case EportIISLogStats.ResolutionMinute:
                     return new TimeSpan(0, 1, 0);
                 case EportIISLogStats.ResolutionSecond:

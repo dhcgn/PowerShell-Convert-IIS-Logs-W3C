@@ -49,6 +49,7 @@ namespace ConvertFromIISLogFile
 
         public const string ResolutionSecond = "Second";
         public const string ResolutionMinute = "Minute";
+        public const string ResolutionQuarterHour = "QuarterHour";
         public const string ResolutionHour = "Hour";
         public const string ResolutionDay = "Day";
         public const string ResolutionWeek = "Week";
@@ -61,7 +62,7 @@ namespace ConvertFromIISLogFile
             HelpMessage = "Resolution"
             )]
         [ValidateNotNull]
-        [ValidateSet(ResolutionSecond, ResolutionMinute, ResolutionHour, ResolutionDay, ResolutionWeek)]
+        [ValidateSet(ResolutionSecond, ResolutionMinute, ResolutionHour, ResolutionQuarterHour, ResolutionDay, ResolutionWeek)]
         public string Resolution { get; set; }
 
         public const string GroupByMethod = "Method";
