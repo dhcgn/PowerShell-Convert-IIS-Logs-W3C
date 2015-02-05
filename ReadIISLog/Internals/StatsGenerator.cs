@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace ConvertFromIISLogFile
@@ -8,11 +9,11 @@ namespace ConvertFromIISLogFile
     {
         private const string Header = "DateTime;Method;Requests;NOKRequests;ServerReceivedBytes;ServerSentBytes;AverageTimeTaken;";
 
-        public static void Create(List<LogEntry> logEntries, string resolution, Action<string> writeOutputCallback, Action<string> writeVerboseCallback, Func<bool> isStopRequested)
+        public static void Create(List<LogEntry> logEntries, string resolution, Action<string> writeOutputCallback, Action<string> writeVerboseCallback, Func<bool> isStopRequested, Settings settings, bool supressCsvHeader)
         {
             writeVerboseCallback.Invoke("Log entries count: " + logEntries.Count);
 
-            writeVerboseCallback.Invoke("Sorting log entries ...");
+            writeVerboseCallback.Invoke("Sorting log entries.");
             logEntries = logEntries.OrderBy(x => x.DateTime).ToList();
 
             TimeSpan resolutionTimeSpan = GetTimeSpanResolution(resolution);
@@ -21,20 +22,25 @@ namespace ConvertFromIISLogFile
             var last = logEntries.Last();
 
             writeVerboseCallback.Invoke(String.Format("Creating a csv from {0} to last {1} over {2} entries", first.DateTimeLocalTime, last.DateTimeLocalTime, logEntries.Count));
-            writeOutputCallback.Invoke(Header);
+            if(!supressCsvHeader) writeOutputCallback.Invoke(Header);
 
-            foreach (var groupByTime in logEntries.GroupBy(x => (long)(x.DateTimeLocalTime.Ticks / resolutionTimeSpan.Ticks) * resolutionTimeSpan.Ticks))
+            writeVerboseCallback.Invoke("Grouping log entries.");
+            foreach (var groupByTime in logEntries.GroupBy(x => (long) (x.DateTimeLocalTime.Ticks/resolutionTimeSpan.Ticks)*resolutionTimeSpan.Ticks))
             {
                 if (isStopRequested.Invoke()) return;
 
                 var dateTime = new DateTime(groupByTime.Key);
                 writeOutputCallback.Invoke(CreateCsvEntry(dateTime, "All", groupByTime.ToList()));
 
-                foreach (var groupByMethod in groupByTime.GroupBy(x => x.UriStem))
+                if (settings.GroupByMethod)
                 {
-                    if (isStopRequested.Invoke()) return;
+                    foreach (var groupByMethod in groupByTime.GroupBy(x => x.UriStem))
+                    {
+                        if (isStopRequested.Invoke()) return;
 
-                    writeOutputCallback.Invoke(CreateCsvEntry(dateTime, groupByMethod.Key, groupByMethod.ToList()));
+                        // ToDo no new rows, new columsn insted.
+                        writeOutputCallback.Invoke(CreateCsvEntry(dateTime, groupByMethod.Key, groupByMethod.ToList()));
+                    }
                 }
             }
         }
@@ -70,5 +76,10 @@ namespace ConvertFromIISLogFile
                     throw new Exception();
             }
         }
+    }
+
+    public class Settings
+    {
+        public bool GroupByMethod { get; set; }
     }
 }

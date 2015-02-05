@@ -58,11 +58,23 @@ namespace ConvertFromIISLogFile
             ValueFromPipelineByPropertyName = true,
             ValueFromPipeline = false,
             Position = 1,
-            HelpMessage = "IIS Log"
+            HelpMessage = "Resolution"
             )]
         [ValidateNotNull]
         [ValidateSet(ResolutionSecond, ResolutionMinute, ResolutionHour, ResolutionDay, ResolutionWeek)]
         public string Resolution { get; set; }
+
+        public const string GroupByMethod = "Method";
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            ValueFromPipeline = false,
+            Position = 2,
+            HelpMessage = "GroupBy"
+            )]
+        [ValidateSet(GroupByMethod)]
+        public string GroupBy { get; set; }
 
         #endregion
 
@@ -74,22 +86,32 @@ namespace ConvertFromIISLogFile
                 return;
             }
 
+            var settings = new Settings
+            {
+                GroupByMethod = this.GroupBy == GroupByMethod
+            };
+
             if (this.InputFiles == null && this.LogEntries !=null)
             {
-                StatsGenerator.Create(this.LogEntries.ToList(), this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
+                StatsGenerator.Create(this.LogEntries.ToList(), this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings, false);
             }
 
+            var supressCsvHeader = false;
             if (this.InputFiles != null && this.LogEntries == null)
             {
+                this.WriteVerbose(string.Format("{0} files will be read.", InputFiles.Count()));
+
                 foreach (var fileInfoGroup in this.InputFiles.GroupBy(x=>x.Name))
                 {
                     List<LogEntry> logEntries = new List<LogEntry>();
 
-                    this.WriteVerbose(String.Format("Reading {0} log files with name {1}.", fileInfoGroup.Count(), fileInfoGroup.Key));
+                    this.WriteVerbose(string.Format("Reading {0} files with filename {1}", fileInfoGroup.Count(), fileInfoGroup.Key));
                     LogReader.ProcessLogFiles(this.InputFiles, entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
 
-                    this.WriteVerbose(String.Format("Erstelle die Statistik aus {0} Einträgen.", fileInfoGroup.Count()));
-                    StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest);
+                    this.WriteVerbose(String.Format("Create stats."));
+                    StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings, supressCsvHeader);
+
+                    supressCsvHeader = true;
                 }
             }
         }
