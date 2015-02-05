@@ -100,9 +100,9 @@ namespace ConvertFromIISLogFile
             var supressCsvHeader = false;
             if (this.InputFiles != null && this.LogEntries == null)
             {
-                this.WriteVerbose(string.Format("{0} files will be read.", InputFiles.Count()));
+                this.WriteVerbose(string.Format("{0} files will be read.", this.InputFiles.Count()));
 
-                foreach (var fileInfoGroup in this.InputFiles.GroupBy(x=>x.Name))
+                foreach (var fileInfoGroup in this.InputFiles.GroupBy(x=>x.Name).OrderByDescending(x=>x.Key))
                 {
                     List<LogEntry> logEntries = new List<LogEntry>();
 
