@@ -253,7 +253,7 @@ namespace ConvertFromIISLogFile
                     return EntryValue.ComputerName;
                 case "s-sitename":
                     return EntryValue.SiteName;
-                case "cs_host":
+                case "cs-host":
                     return EntryValue.cs_host;
 
                 default:
