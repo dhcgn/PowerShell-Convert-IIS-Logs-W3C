@@ -150,6 +150,13 @@ namespace ConvertFromIISLogFile
 
 
         /// <summary>
+        /// The host geader
+        /// 
+        ///     Field: cs-host
+        /// </summary>
+        public string Host { get; set; }
+
+        /// <summary>
         /// The name of the server on which the log file entry was generated.
         /// 
         ///     Field: s-computername

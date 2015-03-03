@@ -180,6 +180,9 @@ namespace ConvertFromIISLogFile
                         case EntryValue.SiteName:
                             result.SiteName = value;
                             break;
+                        case EntryValue.cs_host:
+                            result.Host = value;
+                            break;
                     }
                 }
                 catch (Exception e)
@@ -250,6 +253,8 @@ namespace ConvertFromIISLogFile
                     return EntryValue.ComputerName;
                 case "s-sitename":
                     return EntryValue.SiteName;
+                case "cs_host":
+                    return EntryValue.cs_host;
 
                 default:
                     return EntryValue.Unkown;
@@ -277,7 +282,8 @@ namespace ConvertFromIISLogFile
             TimeTaken,
             Unkown,
             ComputerName,
-            SiteName
+            SiteName,
+            cs_host
         }
     }
 }

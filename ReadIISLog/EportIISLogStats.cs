@@ -34,7 +34,6 @@ namespace ConvertFromIISLogFile
 
         #region Resolution
 
-
         #region NoProgress
 
         [Parameter(
@@ -55,15 +54,24 @@ namespace ConvertFromIISLogFile
         public const string ResolutionWeek = "Week";
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             ValueFromPipeline = false,
             Position = 1,
-            HelpMessage = "Resolution"
+            HelpMessage = "Resolution from second to week"
             )]
-        [ValidateNotNull]
         [ValidateSet(ResolutionSecond, ResolutionMinute, ResolutionHour, ResolutionQuarterHour, ResolutionDay, ResolutionWeek)]
         public string Resolution { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            ValueFromPipeline = false,
+            Position = 1,
+            HelpMessage = "The Resolution in seconds, or use \"Resolution\" with an predefinied value"
+            )]
+        [ValidateRange(1, long.MaxValue)]
+        public long ResolutionInSeconds { get; set; }
 
         public const string GroupByMethod = "Method";
         public const string GroupByNone = "None";
@@ -80,22 +88,39 @@ namespace ConvertFromIISLogFile
 
         #endregion
 
-        protected override void ProcessRecord()
+        protected override void BeginProcessing()
         {
+            ErrorRecord error = null;
             if (this.InputFiles == null && this.LogEntries == null)
             {
-                this.WriteError(new ErrorRecord(new NullReferenceException("InputFiles and LogEntries are null."),"0002",ErrorCategory.InvalidData, this ));
-                return;
+                error = new ErrorRecord(new NullReferenceException("InputFiles and LogEntries are null."), "0002", ErrorCategory.InvalidData, this);
             }
 
+            if(String.IsNullOrEmpty(this.Resolution) && this.ResolutionInSeconds == 0)
+            {
+                error = new ErrorRecord(new NullReferenceException("Parameter Resolution or ResolutionInSeconds must be used."), "0002", ErrorCategory.InvalidData, this);
+            }
+
+            if (!String.IsNullOrEmpty(this.Resolution) && this.ResolutionInSeconds != 0)
+            {
+                error = new ErrorRecord(new NullReferenceException("Parameter Resolution or ResolutionInSeconds must be used, not both."), "0002", ErrorCategory.InvalidData, this);
+            }
+
+            if (error != null)
+                this.ThrowTerminatingError(error);
+        }
+
+        protected override void ProcessRecord()
+        {
             var settings = new Settings
             {
-                GroupByMethod = this.GroupBy == GroupByMethod
+                GroupByMethod = this.GroupBy == GroupByMethod,
+                ResolutionDuration = this.ResolutionInSeconds == 0 ? StatsGenerator.GetTimeSpanResolution(this.Resolution) : TimeSpan.FromSeconds(this.ResolutionInSeconds)
             };
 
-            if (this.InputFiles == null && this.LogEntries !=null)
+            if (this.InputFiles == null && this.LogEntries != null)
             {
-                StatsGenerator.Create(this.LogEntries.ToList(), this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings, false);
+                StatsGenerator.Create(this.LogEntries.ToList(), this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings);
             }
 
             var supressCsvHeader = false;
@@ -103,7 +128,7 @@ namespace ConvertFromIISLogFile
             {
                 this.WriteVerbose(string.Format("{0} files will be read.", this.InputFiles.Count()));
 
-                foreach (var fileInfoGroup in this.InputFiles.GroupBy(x=>x.Name).OrderByDescending(x=>x.Key))
+                foreach (var fileInfoGroup in this.InputFiles.GroupBy(x => x.Name).OrderByDescending(x => x.Key))
                 {
                     List<LogEntry> logEntries = new List<LogEntry>();
 
@@ -111,7 +136,7 @@ namespace ConvertFromIISLogFile
                     LogReader.ProcessLogFiles(fileInfoGroup.ToArray(), entry => logEntries.Add(entry), this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
 
                     this.WriteVerbose(String.Format("Create stats."));
-                    StatsGenerator.Create(logEntries, this.Resolution, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings, supressCsvHeader);
+                    StatsGenerator.Create(logEntries, this.WriteOutputCallback, this.WriteVerboseCallback, () => this.stopRequest, settings, supressCsvHeader);
 
                     supressCsvHeader = true;
                 }
@@ -132,7 +157,7 @@ namespace ConvertFromIISLogFile
                 progressRecord = new ProgressRecord(0, String.Format("Read file: {0}", fullname), String.Format("Read line {0} of {1}", index, total));
                 if (index > 0)
                 {
-                    progressRecord.PercentComplete = (int)((double)index / total * 100);
+                    progressRecord.PercentComplete = (int) ((double) index/total*100);
                 }
             }
 
