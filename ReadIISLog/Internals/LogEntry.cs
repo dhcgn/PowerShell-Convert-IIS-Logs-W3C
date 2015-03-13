@@ -162,5 +162,8 @@ namespace ConvertFromIISLogFile
         ///     Field: s-computername
         /// </summary>
         public string ComputerName { get; set; }
+
+        public string LogFile { get; set; }
+        public string LogFileRootFolder { get; set; }
     }
 }

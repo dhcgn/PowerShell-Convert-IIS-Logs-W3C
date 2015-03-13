@@ -78,7 +78,7 @@ namespace ConvertFromIISLogFile
                             continue;
                         }
 
-                        var logEntry = CreateLogEntry(line, interpretation, errorCallback);
+                        var logEntry = CreateLogEntry(line, interpretation, errorCallback, fullName);
                         if (logEntry != null)
                             outputCallback.Invoke(logEntry);
 
@@ -97,9 +97,14 @@ namespace ConvertFromIISLogFile
             progressCallback.Invoke(index, total, fullName);
         }
 
-        private static LogEntry CreateLogEntry(string line, Dictionary<int, EntryValue> interpretation, Action<Exception> errorCallback)
+        private static LogEntry CreateLogEntry(string line, Dictionary<int, EntryValue> interpretation, Action<Exception> errorCallback, string fullName)
         {
-            var result = new LogEntry();
+            var result = new LogEntry
+            {
+                LogFile = fullName,
+                LogFileRootFolder = Path.GetPathRoot(fullName)
+            };
+
 
             var values = line.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
