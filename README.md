@@ -1,6 +1,6 @@
 # PowerShell Convert IIS Logs (W3C)
-Convert log entries from an IIS Log file in W3C format to a friendly format
-[![Build Status](https://travis-ci.org/dhcgn/PowerShell-Convert-IIS-Logs-W3C-.svg?branch=master)](https://travis-ci.org/dhcgn/PowerShell-Convert-IIS-Logs-W3C-)
+Convert log entries from an IIS Log file in W3C format to a friendly format.
+Build Status: [![Build Status](https://travis-ci.org/dhcgn/PowerShell-Convert-IIS-Logs-W3C-.svg?branch=master)](https://travis-ci.org/dhcgn/PowerShell-Convert-IIS-Logs-W3C-)
 
 ## Install
 ```Powershell
