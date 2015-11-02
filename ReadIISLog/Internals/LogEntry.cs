@@ -17,14 +17,14 @@ namespace ConvertFromIISLogFile
         /// 
         ///     Field: date
         /// </summary>
-        public DateTime Date { get; set; }
+        internal DateTime Date { get; set; }
 
         /// <summary>
         /// The time, in coordinated universal time (UTC), at which the activity occurred.
         /// 
         ///     Field: time
         /// </summary>
-        public DateTime Time { get; set; }
+        internal DateTime Time { get; set; }
 
         /// <summary>
         /// The date and time (UTC) on which the activity occurred.
@@ -34,7 +34,7 @@ namespace ConvertFromIISLogFile
         /// <summary>
         /// The date and time (Local) on which the activity occurred.
         /// </summary>
-        public DateTime DateTimeLocalTime => DateTime.SpecifyKind(this.DateTime, DateTimeKind.Utc);
+        public DateTime DateTimeLocalTime => DateTime.SpecifyKind(this.DateTime, DateTimeKind.Utc).ToLocalTime();
 
         /// <summary>
         ///     Field: s-ip
