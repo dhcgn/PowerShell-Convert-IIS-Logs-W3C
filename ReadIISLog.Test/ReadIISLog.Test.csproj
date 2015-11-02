@@ -51,7 +51,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ConvertFromIisLogFileTest.cs" />
+    <Compile Include="ConvertFromKernelLogFileTest.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SampleData\Umlaute.log" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\Kernel_httperr24.log" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleData\Kernel_SingleRecord.log" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

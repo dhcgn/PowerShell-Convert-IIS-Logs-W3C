@@ -44,8 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConvertFromIISLogFile.cs" />
+    <Compile Include="ConvertFromKernelLogFile.cs" />
     <Compile Include="EportIISLogStats.cs" />
     <Compile Include="Internals\GetEncoding.cs" />
+    <Compile Include="Internals\KernelLogEntry.cs" />
     <Compile Include="Internals\LogEntry.cs" />
     <Compile Include="Internals\LogReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

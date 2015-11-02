@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ReadIISLog.Test
 {
     [TestClass]
-    public class ConvertFromIISLogFile
+    public class ConvertFromIisLogFile_Simple
     {
         [TestMethod]
         public void Import_module()
@@ -36,7 +36,7 @@ namespace ReadIISLog.Test
     }
 
     [TestClass]
-    public class ProcessLogFilesTest
+    public class ConvertFromIisLogFileTest
     {
         private string wellFormedLogFile;
         private string badFormedLogFile;
@@ -48,26 +48,12 @@ namespace ReadIISLog.Test
         {
             var executingAssembly = Assembly.GetExecutingAssembly();
 
-            this.wellFormedLogFile = this.GetValue(executingAssembly, "u_ex150113.log");
-            this.badFormedLogFile = this.GetValue(executingAssembly, "BadSamples.log");
-            this.badValuesLogFile = this.GetValue(executingAssembly, "BadValues.log");
-            this.umlauteLogFile = this.GetValue(executingAssembly, "Umlaute.log");
+            this.wellFormedLogFile = Helper.GetValue(executingAssembly, "u_ex150113.log");
+            this.badFormedLogFile = Helper.GetValue(executingAssembly, "BadSamples.log");
+            this.badValuesLogFile = Helper.GetValue(executingAssembly, "BadValues.log");
+            this.umlauteLogFile = Helper.GetValue(executingAssembly, "Umlaute.log");
         }
 
-        private string GetValue(Assembly executingAssembly, string fileName)
-        {
-            var name = executingAssembly.GetManifestResourceNames().Single(x => x.EndsWith(fileName));
-            var filepath = Path.GetDirectoryName(executingAssembly.Location) + @"\"+ fileName;
-
-
-            using (Stream stream = executingAssembly.GetManifestResourceStream(name))
-            using (var file = new FileStream(filepath, FileMode.Create, FileAccess.Write))
-            {
-                stream.CopyTo(file);
-            }
-
-            return filepath;
-        }
 
         [TestMethod]
         public void WellFormedLogFile()

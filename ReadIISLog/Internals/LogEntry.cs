@@ -10,26 +10,13 @@ namespace ConvertFromIISLogFile
     /// Table 10.1 W3C Extended Log File Fields
     /// http://www.microsoft.com/technet/prodtechnol/WindowsServer2003/Library/IIS/676400bc-8969-4aa7-851a-9319490a9bbb.mspx?mfr=true
     /// </summary>
-    public class LogEntry
+    public class LogEntry : ILogEntry
     {
-        /// <summary>
-        /// The date on which the activity occurred.
-        /// 
-        ///     Field: date
-        /// </summary>
-        internal DateTime Date { get; set; }
-
-        /// <summary>
-        /// The time, in coordinated universal time (UTC), at which the activity occurred.
-        /// 
-        ///     Field: time
-        /// </summary>
-        internal DateTime Time { get; set; }
 
         /// <summary>
         /// The date and time (UTC) on which the activity occurred.
         /// </summary>
-        public DateTime DateTime => new DateTime(this.Date.Year, this.Date.Month, this.Date.Day, this.Time.Hour, this.Time.Minute, this.Time.Second);
+        public DateTime DateTime { get; set; }
 
         /// <summary>
         /// The date and time (Local) on which the activity occurred.
@@ -166,4 +153,6 @@ namespace ConvertFromIISLogFile
         public string LogFile { get; set; }
         public string LogFileRootFolder { get; set; }
     }
+
+  
 }
