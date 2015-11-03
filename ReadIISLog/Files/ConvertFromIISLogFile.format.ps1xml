@@ -96,5 +96,93 @@
         </TableRowEntries>
       </TableControl>
     </View>
+    <View>
+      <Name>ConvertFromIISLogFile.KernelLogEntry</Name>
+      <ViewSelectedBy>
+        <TypeName>ConvertFromIISLogFile.KernelLogEntry</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <!-- DateTimeLocalTime -->
+          <TableColumnHeader>
+            <Width>19</Width>
+          </TableColumnHeader>
+          <!-- SourceIpAddress -->
+          <TableColumnHeader>
+            <Width>16</Width>
+          </TableColumnHeader>
+          <!-- ClientIpAddress -->
+          <TableColumnHeader>
+            <Width>15</Width>
+          </TableColumnHeader>
+          <!-- Method -->
+          <TableColumnHeader>
+            <Width>4</Width>
+          </TableColumnHeader>
+          <!-- ProtocolStatus -->
+          <TableColumnHeader>
+            <Width>6</Width>
+          </TableColumnHeader>
+          <!-- SiteId -->
+          <TableColumnHeader>
+            <Width>6</Width>
+          </TableColumnHeader>
+          <!-- Uri -->
+          <TableColumnHeader />
+          <!-- QueueName -->
+          <TableColumnHeader />
+          <!-- Version -->
+          <TableColumnHeader />
+          <!-- Port -->
+          <TableColumnHeader />
+          <!-- ClientPort -->
+          <TableColumnHeader />
+          <!-- Reason -->
+          <TableColumnHeader />
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>DateTimeLocalTime</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SourceIpAddress</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ClientIpAddress</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Method</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ProtocolStatus</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SiteId</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Uri</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>QueueName</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Version</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Port</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ClientPort</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Reason</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
   </ViewDefinitions>
 </Configuration>

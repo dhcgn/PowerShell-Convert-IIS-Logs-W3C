@@ -37,7 +37,8 @@ namespace ConvertFromIISLogFile
 
         protected override void ProcessRecord()
         {
-            LogReader.ProcessLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
+            //  Todo use generic?
+            LogReader.ProcessKernelLogFiles(this.InputFiles, this.WriteOutput, this.WriteProgress, this.ErrorHandling, this.NoProgress.IsPresent, () => { return this.stopRequest; });
         }
 
         private void ErrorHandling(Exception obj)
@@ -66,7 +67,7 @@ namespace ConvertFromIISLogFile
             this.WriteProgress(progressRecord);
         }
 
-        private void WriteOutput(LogEntry logEntry)
+        private void WriteOutput(KernelLogEntry logEntry)
         {
             if (this.stopRequest) return;
 
