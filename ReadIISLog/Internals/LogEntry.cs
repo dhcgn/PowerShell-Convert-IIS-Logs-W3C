@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace ConvertFromIISLogFile
@@ -26,7 +27,7 @@ namespace ConvertFromIISLogFile
         /// <summary>
         ///     Field: s-ip
         /// </summary>
-        public IPAddress SourceIpAddress { get; set; }
+        public string SourceIpAddress { get; set; }
 
         /// <summary>
         /// The requested action, for example, a GET method.
@@ -68,7 +69,7 @@ namespace ConvertFromIISLogFile
         /// 
         ///     Field: c-ip
         /// </summary>
-        public IPAddress ClientIpAddress { get; set; }
+        public string ClientIpAddress { get; set; }
 
         /// <summary>
         /// The browser type that the client used.
@@ -152,6 +153,8 @@ namespace ConvertFromIISLogFile
 
         public string LogFile { get; set; }
         public string LogFileRootFolder { get; set; }
+
+        public Dictionary<string,string> NotedProperties { get; set; }
     }
 
   

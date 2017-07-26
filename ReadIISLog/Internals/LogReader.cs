@@ -62,7 +62,7 @@ namespace ConvertFromIISLogFile
 
         private static void ProcessLogFile<T>(FileInfo inputFile, Action<T> outputCallback, Action<int, int, string> progressCallback, Action<Exception> errorCallback, bool noLineByLineProgress, Func<bool> isCanceld) where T : ILogEntry, new()
         {
-            var interpretation = new Dictionary<int, EntryValue>();
+            var interpretation = new Dictionary<int, string>();
 
             var fullName = inputFile.FullName;
 
@@ -116,7 +116,7 @@ namespace ConvertFromIISLogFile
 
 
 
-        private static T CreateLogEntry<T>(string line, Dictionary<int, EntryValue> interpretation, Action<Exception> errorCallback, string fullName) where T : ILogEntry, new()
+        private static T CreateLogEntry<T>(string line, Dictionary<int, string> interpretation, Action<Exception> errorCallback, string fullName) where T : ILogEntry, new()
         {
             ILogEntry result = new T();
 
@@ -133,7 +133,17 @@ namespace ConvertFromIISLogFile
                 try
                 {
                     var value = values[i];
-                    var valueInterpretation = interpretation[i];
+
+                    EntryValue valueInterpretation;
+                    if (!Enum.TryParse(interpretation[i], out valueInterpretation))
+                    {
+                        if(result.NotedProperties==null)
+                            result.NotedProperties=new Dictionary<string, string>();
+
+                        result.NotedProperties.Add(interpretation[i], value);
+
+                        continue;
+                    }
 
                     SetProperties(value, valueInterpretation, result);
 
@@ -171,7 +181,7 @@ namespace ConvertFromIISLogFile
                     result.DateTime = new DateTime(result.DateTime.Year, result.DateTime.Month, result.DateTime.Day, time.Hour, time.Minute, time.Second);
                     break;
                 case EntryValue.s_ip:
-                    result.SourceIpAddress = IPAddress.Parse(value);
+                    result.SourceIpAddress = IPAddress.Parse(value).ToString();
                     break;
                 case EntryValue.cs_method:
                     result.Method = value;
@@ -180,7 +190,7 @@ namespace ConvertFromIISLogFile
                     result.Port = Int32.Parse(value);
                     break;
                 case EntryValue.c_ip:
-                    result.ClientIpAddress = IPAddress.Parse(value);
+                    result.ClientIpAddress = IPAddress.Parse(value).ToString();
                     break;
 
 
@@ -268,9 +278,9 @@ namespace ConvertFromIISLogFile
             }
         }
 
-        private static Dictionary<int, EntryValue> GetInterpretation(string line)
+        private static Dictionary<int, string> GetInterpretation(string line)
         {
-            var result = new Dictionary<int, EntryValue>();
+            var result = new Dictionary<int, string>();
 
             line = line.Replace("#Fields:", String.Empty).Trim();
 
@@ -278,71 +288,71 @@ namespace ConvertFromIISLogFile
 
             for (var i = 0; i < fieldNames.Count(); i++)
             {
-                result.Add(i, ParseFieldName(fieldNames[i]));
+                result.Add(i, ParseFieldName(fieldNames[i]).ToString());
             }
 
             return result;
         }
 
-        private static EntryValue ParseFieldName(string fieldName)
+        private static string ParseFieldName(string fieldName)
         {
             switch (fieldName)
             {
                 case "date":
-                    return EntryValue.date;
+                    return EntryValue.date.ToString();
                 case "time":
-                    return EntryValue.time;
+                    return EntryValue.time.ToString();
                 case "s-ip":
-                    return EntryValue.s_ip;
+                    return EntryValue.s_ip.ToString();
                 case "cs-method":
-                    return EntryValue.cs_method;
+                    return EntryValue.cs_method.ToString();
                 case "cs-uri-stem":
-                    return EntryValue.cs_uri_stem;
+                    return EntryValue.cs_uri_stem.ToString();
                 case "cs-uri-query":
-                    return EntryValue.cs_uri_query;
+                    return EntryValue.cs_uri_query.ToString();
                 case "s-port":
-                    return EntryValue.s_port;
+                    return EntryValue.s_port.ToString();
                 case "cs-username":
-                    return EntryValue.cs_username;
+                    return EntryValue.cs_username.ToString();
                 case "c-ip":
-                    return EntryValue.c_ip;
+                    return EntryValue.c_ip.ToString();
                 case "cs(User-Agent)":
-                    return EntryValue.csUser_Agent;
+                    return EntryValue.csUser_Agent.ToString();
                 case "cs(Referer)":
-                    return EntryValue.csReferer;
+                    return EntryValue.csReferer.ToString();
                 case "sc-status":
-                    return EntryValue.sc_status;
+                    return EntryValue.sc_status.ToString();
                 case "sc-substatus":
-                    return EntryValue.sc_substatus;
+                    return EntryValue.sc_substatus.ToString();
                 case "sc-win32-status":
-                    return EntryValue.sc_win32_status;
+                    return EntryValue.sc_win32_status.ToString();
                 case "sc-bytes":
-                    return EntryValue.sc_bytes;
+                    return EntryValue.sc_bytes.ToString();
                 case "cs-bytes":
-                    return EntryValue.cs_bytes;
+                    return EntryValue.cs_bytes.ToString();
                 case "time-taken":
-                    return EntryValue.TimeTaken;
+                    return EntryValue.TimeTaken.ToString();
                 case "s-computername":
-                    return EntryValue.ComputerName;
+                    return EntryValue.ComputerName.ToString();
                 case "s-sitename":
-                    return EntryValue.SiteName;
+                    return EntryValue.SiteName.ToString();
                 case "cs-host":
-                    return EntryValue.cs_host;
+                    return EntryValue.cs_host.ToString();
                 case "c-port":
-                    return EntryValue.c_port;
+                    return EntryValue.c_port.ToString();
                 case "s-queuename":
-                    return EntryValue.s_queuename;
+                    return EntryValue.s_queuename.ToString();
                 case "s-reason":
-                    return EntryValue.s_reason;
+                    return EntryValue.s_reason.ToString();
                 case "s-siteid":
-                    return EntryValue.SiteId;
+                    return EntryValue.SiteId.ToString();
                 case "cs-version":
-                    return EntryValue.Version;
+                    return EntryValue.Version.ToString();
                 case "cs-uri":
-                    return EntryValue.cs_uri;
+                    return EntryValue.cs_uri.ToString();
 
                 default:
-                    return EntryValue.Unkown;
+                    return fieldName;
             }
         }
 
@@ -383,10 +393,11 @@ namespace ConvertFromIISLogFile
     {
         string LogFile { get; set; }
         string LogFileRootFolder { get; set; }
-        IPAddress SourceIpAddress { get; set; }
+        string SourceIpAddress { get; set; }
         string Method { get; set; }
         int Port { get; set; }
-        IPAddress ClientIpAddress { get; set; }
+        string ClientIpAddress { get; set; }
         DateTime DateTime { get; set; }
+        Dictionary<string, string> NotedProperties { get; set; }
     }
 }
