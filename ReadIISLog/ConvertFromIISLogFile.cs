@@ -89,6 +89,12 @@ namespace ConvertFromIISLogFile
 
             try
             {
+                PSObject obj = new PSObject(logEntry);
+                foreach (var notedProperty in logEntry.NotedProperties)
+                {
+                    obj.Properties.Add(new PSNoteProperty(notedProperty.Key, notedProperty.Value));
+                }
+                
                 this.WriteObject(logEntry);
             }
             catch (PipelineStoppedException)
