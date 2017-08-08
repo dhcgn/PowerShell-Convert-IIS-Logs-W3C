@@ -20,10 +20,14 @@ namespace ReadIISLog.Test
         [Test]
         public void Import_module()
         {
-            var executionDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var dir = TestContext.CurrentContext.TestDirectory;
+            var filePath = Path.Combine(dir, "ConvertFromIISLogFile.dll");
+
+            Assert.That(File.Exists(filePath));
 
             var sessionState = InitialSessionState.CreateDefault();
-            sessionState.ImportPSModule(new[] { Path.Combine(executionDir, "ConvertFromIISLogFile.dll")});
+            
+            sessionState.ImportPSModule(new[] { filePath});
 
             var runspace = RunspaceFactory.CreateRunspace(sessionState);
             runspace.Open();
@@ -94,7 +98,7 @@ namespace ReadIISLog.Test
 
             Assert.That(list, Has.Count.EqualTo(1));
             Assert.That(list[0].NotedProperties, Is.Not.Null);
-            Assert.That(list[0].NotedProperties, Has.Count.EqualTo(1));
+            Assert.That(list[0].NotedProperties, Has.Count.EqualTo(2));
         }
 
         [Test]
