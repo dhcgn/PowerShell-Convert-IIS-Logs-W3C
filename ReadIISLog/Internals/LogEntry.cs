@@ -12,6 +12,7 @@ namespace ConvertFromIISLogFile
     /// </summary>
     public class LogEntry : ILogEntry
     {
+
         /// <summary>
         /// The date and time (UTC) on which the activity occurred.
         /// </summary>
@@ -152,4 +153,6 @@ namespace ConvertFromIISLogFile
         public string LogFile { get; set; }
         public string LogFileRootFolder { get; set; }
     }
+
+  
 }

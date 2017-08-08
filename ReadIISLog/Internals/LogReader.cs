@@ -32,7 +32,7 @@ namespace ConvertFromIISLogFile
             {
                 try
                 {
-                    if (isCanceld.Invoke()) return;
+                    if(isCanceld.Invoke())return;
 
                     ProcessLogFile(inputFile, outputCallback, progressCallback, errorCallback, noLineByLineProgress, isCanceld);
                 }
@@ -84,7 +84,7 @@ namespace ConvertFromIISLogFile
                         if (isCanceld.Invoke()) return;
 
                         index++;
-
+                        
                         if (line.StartsWith("#Fields:"))
                         {
                             interpretation = GetInterpretation(line);
@@ -101,7 +101,7 @@ namespace ConvertFromIISLogFile
 
                         if (!noLineByLineProgress)
                         {
-                            if (index % 1000 == 0)
+                            if (index%1000 == 0)
                             {
                                 progressCallback.Invoke(index, total, fullName);
                             }
@@ -113,6 +113,7 @@ namespace ConvertFromIISLogFile
 
             progressCallback.Invoke(index, total, fullName);
         }
+
 
 
         private static T CreateLogEntry<T>(string line, Dictionary<int, EntryValue> interpretation, Action<Exception> errorCallback, string fullName) where T : ILogEntry, new()
@@ -136,13 +137,13 @@ namespace ConvertFromIISLogFile
 
                     SetProperties(value, valueInterpretation, result);
 
-                    if (result.GetType() == typeof(LogEntry))
+                    if (result.GetType() == typeof (LogEntry))
                     {
                         SetPropertiesLogEntry(value, valueInterpretation, (LogEntry) result);
                     }
                     else if (result.GetType() == typeof(KernelLogEntry))
                     {
-                        SetPropertiesKernelLogEntry(value, valueInterpretation, (KernelLogEntry) result);
+                        SetPropertiesKernelLogEntry(value, valueInterpretation, (KernelLogEntry)result);
                     }
                 }
                 catch (Exception e)
@@ -181,6 +182,8 @@ namespace ConvertFromIISLogFile
                 case EntryValue.c_ip:
                     result.ClientIpAddress = IPAddress.Parse(value);
                     break;
+
+
             }
         }
 

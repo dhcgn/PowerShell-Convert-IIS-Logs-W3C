@@ -17,7 +17,7 @@ namespace ConvertFromIISLogFile
             ValueFromPipeline = false,
             Position = 0,
             HelpMessage = "IIS Log"
-        )]
+            )]
         [ValidateNotNull]
         public LogEntry[] LogEntries { get; set; }
 
@@ -28,7 +28,7 @@ namespace ConvertFromIISLogFile
             ValueFromPipeline = false,
             Position = 0,
             HelpMessage = "IIS Log"
-        )]
+            )]
         [ValidateNotNull]
         public FileInfo[] InputFiles { get; set; }
 
@@ -40,7 +40,7 @@ namespace ConvertFromIISLogFile
             Mandatory = false,
             Position = 1,
             HelpMessage = "Don't display current line for more perfomance."
-        )]
+            )]
         [ValidateNotNull]
         public SwitchParameter NoProgress { get; set; }
 
@@ -59,7 +59,7 @@ namespace ConvertFromIISLogFile
             ValueFromPipeline = false,
             Position = 1,
             HelpMessage = "Resolution from second to week"
-        )]
+            )]
         [ValidateSet(ResolutionSecond, ResolutionMinute, ResolutionHour, ResolutionQuarterHour, ResolutionDay, ResolutionWeek)]
         public string Resolution { get; set; }
 
@@ -69,7 +69,7 @@ namespace ConvertFromIISLogFile
             ValueFromPipeline = false,
             Position = 1,
             HelpMessage = "The Resolution in seconds, or use \"Resolution\" with an predefinied value"
-        )]
+            )]
         [ValidateRange(1, long.MaxValue)]
         public long ResolutionInSeconds { get; set; }
 
@@ -82,7 +82,7 @@ namespace ConvertFromIISLogFile
             ValueFromPipeline = false,
             Position = 2,
             HelpMessage = "GroupBy"
-        )]
+            )]
         [ValidateSet(GroupByNone, GroupByMethod)]
         public string GroupBy { get; set; }
 
@@ -96,7 +96,7 @@ namespace ConvertFromIISLogFile
                 error = new ErrorRecord(new NullReferenceException("InputFiles and LogEntries are null."), "0002", ErrorCategory.InvalidData, this);
             }
 
-            if (String.IsNullOrEmpty(this.Resolution) && this.ResolutionInSeconds == 0)
+            if(String.IsNullOrEmpty(this.Resolution) && this.ResolutionInSeconds == 0)
             {
                 error = new ErrorRecord(new NullReferenceException("Parameter Resolution or ResolutionInSeconds must be used."), "0002", ErrorCategory.InvalidData, this);
             }
@@ -157,7 +157,7 @@ namespace ConvertFromIISLogFile
                 progressRecord = new ProgressRecord(0, String.Format("Read file: {0}", fullname), String.Format("Read line {0} of {1}", index, total));
                 if (index > 0)
                 {
-                    progressRecord.PercentComplete = (int) ((double) index / total * 100);
+                    progressRecord.PercentComplete = (int) ((double) index/total*100);
                 }
             }
 

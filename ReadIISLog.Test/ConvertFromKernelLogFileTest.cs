@@ -27,7 +27,7 @@ namespace ReadIISLog.Test
         {
             var list = new List<KernelLogEntry>();
 
-            LogReader.ProcessKernelLogFiles(new[] {new FileInfo(this.wellFormedLogFile)}, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Assert.Fail(exception1.ToString()), true, () => false);
+            LogReader.ProcessKernelLogFiles(new[] { new FileInfo(this.wellFormedLogFile) }, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Assert.Fail(exception1.ToString()), true, () => false);
 
             Assert.AreEqual(22, list.Count);
         }
@@ -37,7 +37,7 @@ namespace ReadIISLog.Test
         {
             var list = new List<KernelLogEntry>();
 
-            LogReader.ProcessKernelLogFiles(new[] {new FileInfo(this.kernelSingleRecordFile)}, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Assert.Fail(exception1.ToString()), true, () => false);
+            LogReader.ProcessKernelLogFiles(new[] { new FileInfo(this.kernelSingleRecordFile) }, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Assert.Fail(exception1.ToString()), true, () => false);
 
             Assert.AreEqual(1, list.Count);
 

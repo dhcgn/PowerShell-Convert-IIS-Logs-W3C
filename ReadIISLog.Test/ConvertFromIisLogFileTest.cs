@@ -21,7 +21,7 @@ namespace ReadIISLog.Test
             var executionDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             var sessionState = InitialSessionState.CreateDefault();
-            sessionState.ImportPSModule(new[] {Path.Combine(executionDir, "ConvertFromIISLogFile.dll")});
+            sessionState.ImportPSModule(new[] { Path.Combine(executionDir, "ConvertFromIISLogFile.dll")});
 
             var runspace = RunspaceFactory.CreateRunspace(sessionState);
             runspace.Open();
@@ -31,6 +31,7 @@ namespace ReadIISLog.Test
             Collection<PSObject> resultObjects = pipeLine.Invoke();
 
             runspace.Close();
+
         }
     }
 
@@ -59,7 +60,7 @@ namespace ReadIISLog.Test
         {
             var list = new List<LogEntry>();
 
-            LogReader.ProcessLogFiles(new[] {new FileInfo(this.wellFormedLogFile)}, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Assert.Fail(exception1.ToString()), true, () => false);
+            LogReader.ProcessLogFiles(new[] {new FileInfo(this.wellFormedLogFile)}, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Assert.Fail(exception1.ToString()),true, () => false);
 
             Assert.AreEqual(40950, list.Count);
         }
@@ -90,7 +91,7 @@ namespace ReadIISLog.Test
         {
             var list = new List<LogEntry>();
 
-            LogReader.ProcessLogFiles(new[] {new FileInfo(this.umlauteLogFile)}, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Console.WriteLine(exception1.ToString()), true, () => false);
+            LogReader.ProcessLogFiles(new[] { new FileInfo(this.umlauteLogFile) }, entry => list.Add(entry), (i, i1, arg3) => { }, exception1 => Console.WriteLine(exception1.ToString()), true, () => false);
 
             Assert.AreEqual(true, list.First().UserAgent.Contains("ä"));
             Assert.AreEqual(true, list.First().UserAgent.Contains("ö"));

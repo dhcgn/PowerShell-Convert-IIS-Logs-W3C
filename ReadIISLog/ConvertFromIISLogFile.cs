@@ -19,7 +19,7 @@ namespace ConvertFromIISLogFile
             ValueFromPipeline = true,
             Position = 0,
             HelpMessage = "IIS LogFiles"
-        )]
+            )]
         [ValidateNotNull]
         public FileInfo[] InputFiles { get; set; }
 
@@ -31,7 +31,7 @@ namespace ConvertFromIISLogFile
             Mandatory = false,
             Position = 1,
             HelpMessage = "Don't display current line for more perfomance."
-        )]
+            )]
         [ValidateNotNull]
         public SwitchParameter NoProgress { get; set; }
 
@@ -76,7 +76,7 @@ namespace ConvertFromIISLogFile
                 progressRecord = new ProgressRecord(0, String.Format("Read file: {0}", fullname), String.Format("Read line {0} of {1}", index, total));
                 if (index > 0)
                 {
-                    progressRecord.PercentComplete = (int) ((double) index / total * 100);
+                    progressRecord.PercentComplete = (int) ((double) index/total*100);
                 }
             }
 
