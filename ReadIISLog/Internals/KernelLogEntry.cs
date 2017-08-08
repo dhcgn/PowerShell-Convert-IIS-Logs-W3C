@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace ConvertFromIISLogFile
@@ -17,6 +18,8 @@ namespace ConvertFromIISLogFile
         /// </summary>
         public DateTime DateTime { get; set; }
 
+        
+
         /// <summary>
         /// The date and time (Local) on which the activity occurred.
         /// </summary>
@@ -28,7 +31,7 @@ namespace ConvertFromIISLogFile
         /// 
         ///     Field: s-ip
         /// </summary>
-        public IPAddress SourceIpAddress { get; set; }
+        public string SourceIpAddress { get; set; }
 
         /// <summary>
         /// The requested action, for example, a GET method.
@@ -78,7 +81,7 @@ namespace ConvertFromIISLogFile
         /// 
         ///     Field: c-ip
         /// </summary>
-        public IPAddress ClientIpAddress { get; set; }
+        public string ClientIpAddress { get; set; }
 
         /// <summary>
         /// The protocol status cannot be greater than 999.
@@ -112,5 +115,7 @@ namespace ConvertFromIISLogFile
 
         public string LogFile { get; set; }
         public string LogFileRootFolder { get; set; }
+
+        public Dictionary<string, string> NotedProperties { get; set; }
     }
 }
