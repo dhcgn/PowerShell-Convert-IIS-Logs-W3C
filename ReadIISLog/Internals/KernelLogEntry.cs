@@ -10,7 +10,7 @@ namespace ConvertFromIISLogFile
     /// Format of the HTTP API error logs
     /// https://support.microsoft.com/en-us/kb/820729#bookmark-1
     /// </summary>
-    public class KernelLogEntry: ILogEntry
+    public class KernelLogEntry : ILogEntry
     {
         /// <summary>
         /// The date and time (UTC) on which the activity occurred.

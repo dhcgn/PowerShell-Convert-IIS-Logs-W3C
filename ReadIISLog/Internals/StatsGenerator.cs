@@ -14,12 +14,12 @@ namespace ConvertFromIISLogFile
             writeVerboseCallback.Invoke("Log entries count: " + logEntries.Count);
 
             writeVerboseCallback.Invoke("Sorting log entries.");
-           
+
             writeVerboseCallback.Invoke(String.Format("Creating output from {0} entries", logEntries.Count));
-            if(!supressCsvHeader) writeOutputCallback.Invoke(Header);
+            if (!supressCsvHeader) writeOutputCallback.Invoke(Header);
 
             writeVerboseCallback.Invoke("Grouping log entries.");
-            foreach (var groupByTime in logEntries.GroupBy(x => (long)(x.DateTimeLocalTime.Ticks / settings.ResolutionDuration.Ticks) * settings.ResolutionDuration.Ticks).OrderByDescending(x=>x.Key))
+            foreach (var groupByTime in logEntries.GroupBy(x => (long) (x.DateTimeLocalTime.Ticks / settings.ResolutionDuration.Ticks) * settings.ResolutionDuration.Ticks).OrderByDescending(x => x.Key))
             {
                 if (isStopRequested.Invoke()) return;
 
@@ -46,11 +46,11 @@ namespace ConvertFromIISLogFile
                 name,
                 groupByMethod.LongCount(),
                 groupByMethod.Where(x => x.HttpStatus.StartsWith("4") || x.HttpStatus.StartsWith("5")).LongCount(),
-                groupByMethod.Select(x=>(long)x.ServerReceivedBytes).Sum(),
-                groupByMethod.Select(x => (long)x.ServerSentBytes).Sum(),
+                groupByMethod.Select(x => (long) x.ServerReceivedBytes).Sum(),
+                groupByMethod.Select(x => (long) x.ServerSentBytes).Sum(),
                 groupByMethod.Average(x => x.TimeTaken),
                 resolutionDuration.TotalSeconds
-                );
+            );
         }
 
         public static TimeSpan GetTimeSpanResolution(string resolution)
